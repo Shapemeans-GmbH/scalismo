@@ -78,7 +78,7 @@ abstract class MeanPointwiseLossMetric[D: NDSpace, A: Scalar](
 
     // we compute the mean using a monte carlo integration
     val samples = sampler.sample()
-    new ParVector(samples.toVector).map { case (pt, _) => metricValue(pt).getOrElse(0.0) }.sum / samples.size
+    (new ParVector(samples.toVector).map { case (pt, _) => BigDecimal(metricValue(pt).getOrElse(0.0)) }.sum / samples.size).toDouble
   }
 
   private def computeDerivative(parameters: DenseVector[Double], sampler: Sampler[D]): DenseVector[Double] = {
